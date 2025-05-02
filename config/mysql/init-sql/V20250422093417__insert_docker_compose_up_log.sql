@@ -1,0 +1,2 @@
+INSERT INTO `docker_compose_up_logs`
+VALUES (NULL, CURRENT_TIMESTAMP);

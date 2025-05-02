@@ -12,10 +12,36 @@ services:
       - portainer-data:/data
     networks:
       - network
+  mysql:
+    image: mysql:8.4.5
+    container_name: devops-mysql-container
+    hostname: devops-mysql-container
+    restart: unless-stopped
+    ports:
+      - "${DEVOPS_MYSQL_HOST_PORT}:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DEVOPS_MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DEVOPS_MYSQL_DATABASE}
+      MYSQL_USER: ${DEVOPS_MYSQL_USER}
+      MYSQL_PASSWORD: ${DEVOPS_MYSQL_PASSWORD}
+    volumes:
+      - ./config/mysql/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+      - ./config/mysql/init-sql:/docker-entrypoint-initdb.d
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DEVOPS_MYSQL_ROOT_PASSWORD}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    networks:
+      - network
 
 volumes:
   portainer-data:
     name: devops-portainer-data
+  mysql-data:
+    name: devops-mysql-data
 
 networks:
   network:

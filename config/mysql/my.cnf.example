@@ -1,0 +1,139 @@
+# MySQL server configuration file example.
+#
+# For detailed explanations see official documentation:
+# https://dev.mysql.com/doc/refman/8.4/en/server-options.html
+# https://dev.mysql.com/doc/refman/8.4/en/server-system-variables.html
+
+[client]
+# Connection parameters
+port = 3306                              # TCP/IP port for client connections
+socket = /var/run/mysqld/mysqld.sock     # Unix socket file for local connections
+
+[mysqld_safe]
+# Server safety options
+socket = /var/run/mysqld/mysqld.sock     # Socket file used by mysqld_safe
+nice = 0                                 # Process scheduling priority (0=default)
+
+[mysqld]
+# Basic Settings
+user = mysql                              # System user for mysqld process
+pid-file = /var/run/mysqld/mysqld.pid     # Process ID file location
+socket = /var/run/mysqld/mysqld.sock      # Unix socket file for local connections
+port = 3306                               # Listening port for TCP/IP connections
+basedir = /usr                            # MySQL installation directory
+datadir = /var/lib/mysql                  # Data directory
+tmpdir = /tmp                             # Temporary files directory
+lc-messages-dir = /usr/share/mysql        # Error messages directory
+
+# Security
+bind-address = 127.0.0.1       # IP address to bind (Set to 0.0.0.0 for remote connections, ensure firewall and user permissions are configured)
+local_infile = OFF             # Disable LOAD DATA LOCAL INFILE for security
+#skip_name_resolve = 1         # Uncomment to skip DNS lookups for connections
+#admin_address = 127.0.0.1     # Admin interface bind address
+#admin_port = 33062            # Admin interface port
+
+# Storage & Character Set
+default-storage-engine = InnoDB            # Default table storage engine
+character-set-server = utf8mb4             # Server default character set
+collation-server = utf8mb4_unicode_ci      # Server default collation
+transaction-isolation = READ-COMMITTED     # Default transaction isolation level
+
+# Memory Configuration
+max_allowed_packet = 64M        # Maximum packet size
+thread_stack = 256K             # Stack size for each thread
+thread_cache_size = 32          # Number of threads cached (Increase to 50-100 for high-concurrency, or lower to 8-16 for low-memory systems; monitor with 'SHOW STATUS LIKE "Threads_created";')
+sort_buffer_size = 256K         # Each session that needs to do a sort allocates
+read_buffer_size = 128K         # Buffer for sequential table scans
+read_rnd_buffer_size = 256K     # Buffer for random reads
+
+# Table Configuration
+table_open_cache = 2000             # Number of open tables cached (Increase to 4000-8000 for large databases; monitor with 'SHOW STATUS LIKE "Open_tables";')
+table_definition_cache = 2000       # Number of table definitions cached
+open_files_limit = 6000             # Maximum number of open files (Reduce to 3000 for low-memory systems, or increase to 10000 for large databases)
+table_open_cache_instances = 8      # Partition the table cache (Increase to 16 for high-concurrency)
+
+# Connection Settings
+max_connections = 300                                    # Maximum simultaneous connections (Increase to 500-1000 for high-concurrency workloads, monitor with 'SHOW STATUS LIKE "Max_used_connections";')
+wait_timeout = 300                                       # Non-interactive connection timeout (Seconds before closing non-interactive connections; increase to 600-1800 for long-running queries)
+interactive_timeout = 300                                # Interactive connection timeout (Seconds before closing interactive connections; increase to 600-1800 for long-running queries)
+max_connect_errors = 100000                              # Limit connection errors before blocking a host (Reduce to 1000-10000 for stricter security)
+#connection_control_failed_connections_threshold = 3     # Enable connection delay after failures
+#connection_control_min_connection_delay = 1000          # Minimum delay in milliseconds
+
+# Logging Configuration
+log_error = /var/log/mysql/error.log                    # Error log file path
+slow_query_log = 1                                      # Enable slow query log (Set to 0 to disable in production to reduce logging overhead)
+slow_query_log_file = /var/log/mysql/mysql-slow.log     # Slow query log path
+long_query_time = 1                                     # Slow query threshold in seconds (Adjust to 0.5-5 based on application needs)
+log_queries_not_using_indexes = 1                       # Log queries not using indexes (Set to 0 to reduce slow query log size in production)
+log_error_verbosity = 2                                 # Error log verbosity (1=errors, 2=errors+warnings, 3=errors+warnings+notes)
+log_timestamps = UTC                                    # Timestamp format in logs
+general_log = 0                                         # Disable general query log (Set to 1 for debugging (increases logging overhead))
+#general_log_file = /var/log/mysql/mysql-query.log      # General query log path
+
+# Binary Logging (uncomment for replication)
+# server-id = 1                                  # Server ID for replication
+# log_bin = /var/log/mysql/mysql-bin.log         # Binary log path
+binlog_expire_logs_seconds = 604800              # Seconds to keep binary logs (7 days; reduce to 3 days (259200) for limited disk space, or increase to 14 days (1209600) for longer retention)
+max_binlog_size = 1G                             # Maximum binary log size
+binlog_format = ROW                              # Recommended format for replication
+binlog_row_image = FULL                          # Log complete rows for ROW format
+binlog_group_commit_sync_delay = 0               # Microseconds to wait before syncing (Set to 100-1000 for high-throughput workloads)
+binlog_group_commit_sync_no_delay_count = 10     # Max transactions before sync
+sync_binlog = 1                                  # Sync binary log to disk after each write
+binlog_checksum = CRC32                          # Checksum algorithm for binary logs (CRC32 is recommended for replication integrity)
+#gtid_mode = ON                                  # Enable GTID-based replication
+#enforce_gtid_consistency = ON                   # Enforce GTID consistency
+
+# InnoDB Configuration
+innodb_data_file_path = ibdata1:128M:autoextend               # System tablespace files
+innodb_file_per_table = ON                                    # Use separate tablespace per table
+innodb_buffer_pool_size = 1G                                  # Size of memory buffer pool (Set to 50-70% of RAM (e.g., 2G for 4GB RAM, 5-6G for 8GB RAM, 10-12G for 16GB RAM); monitor with 'SHOW ENGINE INNODB STATUS' for Buffer pool hit rate)
+innodb_buffer_pool_instances = 4                              # Number of buffer pool instances (Increase to 8-16 for high-concurrency or multi-core CPUs)
+innodb_redo_log_capacity = 1G                                 # Total redo log capacity (Increase to 2-4G for high write workloads or SSD)
+innodb_log_buffer_size = 16M                                  # Size of log buffer (Increase to 32-64M for high write workloads; monitor with 'SHOW ENGINE INNODB STATUS' for log buffer waits)
+innodb_flush_log_at_trx_commit = 1                            # Durability setting (1=ACID compliant)
+# innodb_flush_method = O_DIRECT_NO_FSYNC                     # Recommended I/O method for modern Linux (Uncomment for SSD on Linux with ext4/XFS)
+innodb_read_io_threads = 4                                    # Number of read I/O threads (Increase to 8-16 for multi-core CPUs or SSD)
+innodb_write_io_threads = 4                                   # Number of write I/O threads (Increase to 8-16 for multi-core CPUs or SSD)
+innodb_thread_concurrency = 0                                 # Limit on concurrent threads (0 = no limit, auto-managed; set to 8-16 for specific control)
+innodb_io_capacity = 200                                      # I/O capacity (Set to 1000-2000 for SSD)
+innodb_io_capacity_max = 400                                  # Maximum I/O capacity under pressure (Set to 2000-4000 for SSD)
+innodb_stats_persistent = ON                                  # Persistent optimizer statistics
+innodb_stats_auto_recalc = ON                                 # Automatic statistics recalculation
+innodb_adaptive_hash_index = ON                               # Enable adaptive hash index
+innodb_change_buffering = all                                 # Buffer inserts, deletes, and purges
+innodb_temp_data_file_path = ibtmp1:12M:autoextend:max:5G     # Temp tablespace configuration
+innodb_print_all_deadlocks = ON                               # Log all deadlocks to error log
+innodb_online_alter_log_max_size = 256M                       # Online DDL log file max size
+innodb_open_files = 2000                                      # Limit InnoDB open files (Increase to 4000-8000 for databases with many tables)
+innodb_page_cleaners = 4                                      # Page cleaner threads
+innodb_purge_threads = 4                                      # Purge threads
+innodb_checksum_algorithm = crc32                             # Checksum algorithm for pages
+innodb_idle_flush_pct = 100                                   # Idle-time page flushing percentage (8.4+)
+
+# Performance Schema
+performance_schema = ON     # Enable performance schema (Set to OFF to save CPU/memory on low-memory systems (disables detailed performance monitoring))
+performance_schema_consumer_events_statements_current = ON      # Enable statement event monitoring; set to OFF to reduce overhead
+performance_schema_consumer_events_statements_history = ON      # Enable statement history; set to OFF to reduce overhead
+performance_schema_consumer_events_waits_current = ON           # Enable wait event monitoring; set to OFF to reduce overhead
+performance_schema_consumer_events_waits_history = ON           # Enable wait event history; set to OFF to reduce overhead
+
+# Optimizer
+# optimizer_switch = 'index_merge=on,index_merge_union=on,index_merge_sort_union=on,index_merge_intersection=on,engine_condition_pushdown=on,index_condition_pushdown=on,mrr=on,mrr_cost_based=on,block_nested_loop=on,batched_key_access=off,materialization=on,semijoin=on,loosescan=on,firstmatch=on,duplicateweedout=on,subquery_materialization_cost_based=on,use_index_extensions=on,condition_fanout_filter=on,derived_merge=on,use_invisible_indexes=off,skip_scan=on,hash_join=on'     # Advanced query optimizations (MySQL defaults are recommended for most workloads)
+optimizer_search_depth = 0     # Let optimizer determine optimal depth
+
+[mysqldump]
+# Backup Configuration
+quick                        # Retrieve rows one at a time
+quote-names                  # Quote identifiers with backticks
+max_allowed_packet = 64M     # Maximum packet size for dump operations
+
+[mysql]
+# Client Configuration
+no-auto-rehash                      # Disable automatic database/table completion
+default-character-set = utf8mb4     # Default client character set
+
+# Additional Configuration Directories
+!includedir /etc/mysql/conf.d/
+!includedir /etc/mysql/mysql.conf.d/
