@@ -36,12 +36,33 @@ services:
       start_period: 30s
     networks:
       - network
+  redis:
+    image: redis:7.4.2
+    container_name: devops-redis-container
+    hostname: devops-redis-container
+    restart: unless-stopped
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf", "--requirepass", "${DEVOPS_REDIS_PASSWORD}" ]
+    ports:
+      - "${DEVOPS_REDIS_HOST_PORT}:6379"
+    volumes:
+      - ./config/redis/redis.conf:/usr/local/etc/redis/redis.conf:ro
+      - redis-data:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "-a", "${DEVOPS_REDIS_PASSWORD}", "--raw", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - network
 
 volumes:
   portainer-data:
     name: devops-portainer-data
   mysql-data:
     name: devops-mysql-data
+  redis-data:
+    name: devops-redis-data
 
 networks:
   network:
