@@ -1,0 +1,44 @@
+# Documentation
+*.ipynb         text eol=lf
+*.markdown      text eol=lf diff=markdown
+*.md            text eol=lf diff=markdown
+*.mdwn          text eol=lf diff=markdown
+*.mdown         text eol=lf diff=markdown
+*.mkd           text eol=lf diff=markdown
+*.mkdn          text eol=lf diff=markdown
+*.mdtxt         text eol=lf
+*.mdtext        text eol=lf
+*.txt           text eol=lf
+AUTHORS         text eol=lf
+CHANGELOG       text eol=lf
+CHANGES         text eol=lf
+CONTRIBUTING    text eol=lf
+COPYING         text eol=lf
+copyright       text eol=lf
+*COPYRIGHT*     text eol=lf
+INSTALL         text eol=lf
+license         text eol=lf
+LICENSE         text eol=lf
+NEWS            text eol=lf
+readme          text eol=lf
+*README*        text eol=lf
+TODO            text eol=lf
+
+# Configs
+.env            text eol=lf
+.env.*          text eol=lf
+.gitattributes  text eol=lf
+.gitconfig      text eol=lf
+.gitignore      text eol=lf
+*.yaml          text eol=lf
+*.yml           text eol=lf
+*.cnf           text eol=lf
+*.conf          text eol=lf
+*.template      text eol=lf
+
+# Common build-tool wrapper scripts ('.cmd' versions are handled by 'Common.gitattributes')
+gradlew         text eol=lf
+*.sh            text eol=lf
+*.bash          text eol=lf
+*.cmd           text eol=crlf
+*.bat           text eol=crlf

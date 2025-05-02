@@ -1,0 +1,4 @@
+networks:
+  network:
+    name: devops-network
+    driver: bridge
