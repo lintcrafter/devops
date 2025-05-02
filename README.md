@@ -1,8 +1,8 @@
 # DevOps
 
-![GitHub](https://img.shields.io/github/license/lintcrafter/devops?color=282661)
-[![](https://img.shields.io/badge/Blog-@lintcrafter-C90C4B.svg)](https://lintcrafter.github.io)
-[![](https://img.shields.io/badge/Github-@lintcrafter-1F2328.svg)](https://github.com/lintcrafter)
+[![License](https://img.shields.io/github/license/lintcrafter/devops?color=282661)](https://github.com/lintcrafter/devops/blob/main/LICENSE)
+[![LintCrafter's Blog](https://img.shields.io/badge/Blog-@LintCrafter-C90C4B.svg)](https://lintcrafter.github.io)
+[![LintCrafter](https://img.shields.io/badge/Github-@LintCrafter-1F2328.svg)](https://github.com/lintcrafter)
 
 **DevOps** 是一个用于快速搭建开发环境的 Docker Compose 项目。
 旨在为开发者提供一致、可重复的开发环境，简化本地开发和测试流程。
