@@ -75,6 +75,30 @@ services:
       start_period: 3s
     networks:
       - network
+  rabbitmq:
+    image: rabbitmq:4.1.0
+    container_name: devops-rabbitmq-container
+    hostname: devops-rabbitmq-container
+    restart: unless-stopped
+    ports:
+      - "${DEVOPS_RABBITMQ_HOST_AMQP_PORT}:5672"
+      - "${DEVOPS_RABBITMQ_HOST_MANAGEMENT_PORT}:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${DEVOPS_RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${DEVOPS_RABBITMQ_DEFAULT_PASS}
+    volumes:
+      - ./config/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./config/rabbitmq/enabled-plugins:/etc/rabbitmq/enabled_plugins:ro
+      - rabbitmq-data:/var/lib/rabbitmq/
+      - rabbitmq-log:/var/log/rabbitmq
+    healthcheck:
+      test: [ "CMD-SHELL", "rabbitmq-diagnostics -q check_running && rabbitmq-diagnostics -q check_port_connectivity && rabbitmq-diagnostics -q check_local_alarms" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    networks:
+      - network
 
 volumes:
   portainer-data:
@@ -87,6 +111,10 @@ volumes:
     name: devops-nginx-cache
   nginx-log:
     name: devops-nginx-log
+  rabbitmq-data:
+    name: devops-rabbitmq-data
+  rabbitmq-log:
+    name: devops-rabbitmq-log
 
 networks:
   network:
