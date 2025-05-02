@@ -1,3 +1,22 @@
+services:
+  portainer:
+    image: portainer/portainer-ce:2.29.1
+    container_name: devops-portainer-container
+    hostname: devops-portainer-container
+    restart: unless-stopped
+    ports:
+      - "${DEVOPS_PORTAINER_HOST_HTTP_PORT}:9000"
+      - "${DEVOPS_PORTAINER_HOST_HTTPS_PORT}:9443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer-data:/data
+    networks:
+      - network
+
+volumes:
+  portainer-data:
+    name: devops-portainer-data
+
 networks:
   network:
     name: devops-network
