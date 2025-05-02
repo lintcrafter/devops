@@ -7,6 +7,9 @@
 **DevOps** 是一个用于快速搭建开发环境的 Docker Compose 项目。
 旨在为开发者提供一致、可重复的开发环境，简化本地开发和测试流程。
 
+**注意：在 Windows 下使用 Docker Desktop 时，如果需要将配置文件从宿主机映射到容器内部，最好将宿主机的文件设置为只读。
+原因见[「`MySql` 配置文件不生效问题」](#mysql-配置文件不生效问题)。**
+
 ## 前置条件
 
 确保已安装：
@@ -45,3 +48,28 @@
 | **使用特定环境文件**   | `docker compose --env-file <file> up -d`  |
 
 > **警告**：使用 `docker compose down -v` 会删除所有数据卷，请提前备份数据。
+
+## 常见问题
+
+### MySQL 配置文件不生效问题
+
+**问题**：在 Windows 的 Docker Desktop 中，MySQL 配置文件映射到容器内时可能不生效。
+
+**解决步骤**：
+
+1. 查看容器日志：
+   ```bash
+   docker logs mysql-container
+   ```
+2. 若日志显示类似以下警告，说明 Windows 宿主机文件权限在映射时发生错误（原因未知）：
+   ```
+   mysqld: [Warning] World-writable config file '/etc/mysql/conf.d/my.cnf' is ignored.
+   ```
+3. 解决方案是将配置文件设置为只读：
+   ```bash
+   chmod 0444 mysql/my.cnf
+   ```
+4. 重新启动服务：
+   ```bash
+   docker compose up -d
+   ```
