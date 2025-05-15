@@ -76,7 +76,7 @@ services:
     networks:
       - network
   rabbitmq:
-    image: rabbitmq:4.1.0
+    image: rabbitmq:4.1.0-management
     container_name: devops-rabbitmq-container
     hostname: devops-rabbitmq-container
     restart: unless-stopped
