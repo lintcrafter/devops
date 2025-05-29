@@ -28,24 +28,30 @@
    cp .env.example .env
    ```
 2. 根据需要修改 `.env` 文件中的配置项。
+3. 启动所有服务（后台运行）：
+   ```bash
+   docker compose --profile all up -d
+   ```
 
 ### 2. 常用 Docker Compose 命令
 
-| 功能             | 命令                                        |
-|----------------|-------------------------------------------|
-| **启动服务（后台运行）** | `docker compose up -d`                    |
-| **停止服务（保留容器）** | `docker compose stop`                     |
-| **停止并移除服务**    | `docker compose down`                     |
-| **移除服务并清理数据卷** | `docker compose down -v`                  |
-| **查看服务状态**     | `docker compose ps`                       |
-| **查看所有服务状态**   | `docker compose ps -a`                    |
-| **查看服务日志**     | `docker compose logs`                     |
-| **实时跟踪日志**     | `docker compose logs -f`                  |
-| **在容器中执行命令**   | `docker compose exec <service> <command>` |
-| **重启服务**       | `docker compose restart`                  |
-| **检查配置文件语法**   | `docker compose config`                   |
-| **移除停止的容器**    | `docker compose rm`                       |
-| **使用特定环境文件**   | `docker compose --env-file <file> up -d`  |
+| 功能                                            | 命令                                                                   |
+|-----------------------------------------------|----------------------------------------------------------------------|
+| **启动服务（后台运行）**                                | `docker compose up -d`                                               |
+| **停止服务（保留容器）**                                | `docker compose stop`                                                |
+| **停止并移除服务**                                   | `docker compose down`                                                |
+| **移除服务并清理数据卷**                                | `docker compose down -v`                                             |
+| **查看服务状态**                                    | `docker compose ps`                                                  |
+| **查看所有服务状态**                                  | `docker compose ps -a`                                               |
+| **查看服务日志**                                    | `docker compose logs`                                                |
+| **实时跟踪日志**                                    | `docker compose logs -f`                                             |
+| **在容器中执行命令**                                  | `docker compose exec <service> <command>`                            |
+| **重启服务**                                      | `docker compose restart`                                             |
+| **检查配置文件语法**                                  | `docker compose config`                                              |
+| **移除停止的容器**                                   | `docker compose rm`                                                  |
+| **使用特定环境文件**                                  | `docker compose --env-file <file> up -d`                             |
+| **执行命令时，包含标记了 profile_name 的服务**              | `docker compose --profile <profile_name> <command>`                  |
+| **执行命令时，包含标记了 profile1 或 profile2 的服务（并集关系）** | `docker compose --profile <profile1> --profile <profile2> <command>` |
 
 > **警告**：使用 `docker compose down -v` 会删除所有数据卷，请提前备份数据。
 

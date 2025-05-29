@@ -1,5 +1,6 @@
 services:
   portainer:
+    profiles: [ "all", "portainer" ]
     image: portainer/portainer-ce:2.29.1
     container_name: devops-portainer-container
     hostname: devops-portainer-container
@@ -13,6 +14,7 @@ services:
     networks:
       - network
   mysql:
+    profiles: [ "all", "mysql" ]
     image: mysql:8.4.5
     container_name: devops-mysql-container
     hostname: devops-mysql-container
@@ -37,6 +39,7 @@ services:
     networks:
       - network
   redis:
+    profiles: [ "all", "redis" ]
     image: redis:7.4.2
     container_name: devops-redis-container
     hostname: devops-redis-container
@@ -56,6 +59,7 @@ services:
     networks:
       - network
   nginx:
+    profiles: [ "all", "nginx" ]
     image: nginx:1.26.3
     container_name: devops-nginx-container
     hostname: devops-nginx-container
@@ -76,6 +80,7 @@ services:
     networks:
       - network
   rabbitmq:
+    profiles: [ "all", "rabbitmq" ]
     image: rabbitmq:4.1.0-management
     container_name: devops-rabbitmq-container
     hostname: devops-rabbitmq-container
