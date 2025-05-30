@@ -104,6 +104,29 @@ services:
       start_period: 30s
     networks:
       - network
+  minio:
+    profiles: [ "all", "minio" ]
+    image: minio/minio:RELEASE.2025-04-22T22-12-26Z
+    container_name: devops-minio-container
+    hostname: devops-minio-container
+    restart: unless-stopped
+    command: server /data/disk{1...4} --console-address ":9001" -address ":9000"
+    ports:
+      - "${DEVOPS_MINIO_HOST_API_PORT}:9000"
+      - "${DEVOPS_MINIO_HOST_CONSOLE_PORT}:9001"
+    environment:
+      MINIO_ROOT_USER: ${DEVOPS_MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${DEVOPS_MINIO_ROOT_PASSWORD}
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: [ "CMD", "mc", "ready", "local" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - network
 
 volumes:
   portainer-data:
@@ -120,6 +143,8 @@ volumes:
     name: devops-rabbitmq-data
   rabbitmq-log:
     name: devops-rabbitmq-log
+  minio-data:
+    name: devops-minio-data
 
 networks:
   network:
