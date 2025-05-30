@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define config folder
-CONFIG_DIR="./config"
+CONFIG_DIR="./configs"
 
 # Check if permission is provided
 if [ -z "$1" ]; then
